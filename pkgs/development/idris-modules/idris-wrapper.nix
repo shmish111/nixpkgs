@@ -6,7 +6,6 @@ symlinkJoin {
   buildInputs = [ makeWrapper ];
   postBuild = ''
     wrapProgram $out/bin/idris \
-      --run 'export IDRIS_CC=/nix/store/ikk8899vd9yigrw06rffxqx3pdj9n96l-clang-wrapper-5.0.2/bin/clang' \
       --suffix LIBRARY_PATH : ${lib.makeLibraryPath [ gmp ]}
   '';
 }
