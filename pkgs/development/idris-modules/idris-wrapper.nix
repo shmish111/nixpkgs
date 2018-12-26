@@ -1,4 +1,4 @@
-{ lib, symlinkJoin, makeWrapper, idris-no-deps, gcc, gmp }:
+{ stdenv, lib, symlinkJoin, makeWrapper, idris-no-deps, gcc, gmp }:
 
 symlinkJoin {
   inherit (idris-no-deps) name src meta;
@@ -6,7 +6,7 @@ symlinkJoin {
   buildInputs = [ makeWrapper ];
   postBuild = ''
     wrapProgram $out/bin/idris \
-      --run 'export IDRIS_CC=''${IDRIS_CC:-${lib.getBin gcc}/bin/gcc}' \
+      --run 'export IDRIS_CC=''${IDRIS_CC:-${stdenv.cc}/bin/cc}'
       --suffix LIBRARY_PATH : ${lib.makeLibraryPath [ gmp ]}
   '';
 }
