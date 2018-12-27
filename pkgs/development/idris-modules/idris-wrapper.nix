@@ -8,5 +8,6 @@ symlinkJoin {
     wrapProgram $out/bin/idris \
       --run 'export IDRIS_CC=''${IDRIS_CC:-${stdenv.cc}/bin/cc}'
       --suffix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ gmp ]}
+      --suffix NIX_CPATH_LINK : ${lib.makeLibraryPath [ gmp ]}
   '';
 }
