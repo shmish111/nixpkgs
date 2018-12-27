@@ -7,6 +7,7 @@ symlinkJoin {
   postBuild = ''
     wrapProgram $out/bin/idris \
       --run 'export IDRIS_CC=''${IDRIS_CC:-${stdenv.cc}/bin/cc}' \
+      --run 'export NIX_CFLAGS_LINK=''${NI_CFLAGS_LINK:-${lib.makeLibraryPath [ gmp ]}}' \
       --suffix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ gmp ]}
   '';
 }
