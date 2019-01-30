@@ -54,7 +54,10 @@ in stdenv.mkDerivation (fBuildAttrs // {
 
       # Patching symlinks to remove build directory reference
       find $bazelOut/external -type l | while read symlink; do
-        ln -sf $(readlink "$symlink" | sed "s,$NIX_BUILD_TOP,NIX_BUILD_TOP,") "$symlink"
+        if [[ $(readlink -f "$symlink") != /nix/store/* ]] ;
+        then
+          ln -sf $(readlink "$symlink" | sed "s,$NIX_BUILD_TOP,NIX_BUILD_TOP,") "$symlink"
+	      fi
       done
 
       cp -r $bazelOut/external $out
@@ -63,9 +66,13 @@ in stdenv.mkDerivation (fBuildAttrs // {
     '';
 
     dontFixup = true;
-    outputHashMode = "recursive";
-    outputHashAlgo = "sha256";
-    outputHash = fetchAttrs.sha256;
+    # If we are using nix for some of our external dependencies in bazel, as we have to in the case of rules_go
+    # then we will have a different hash depending on which system we built on, since our dependency can have a
+    # different hash. Currently I don't know a way round this.
+    # Maybe we could only fetch non-nix stuff? I think in the same way that we remove built in external workspaces?
+    # outputHashMode = "recursive";
+    # outputHashAlgo = "sha256";
+    # outputHash = fetchAttrs.sha256;
   });
 
   nativeBuildInputs = fBuildAttrs.nativeBuildInputs or [] ++ [ (if enableNixHacks then (bazel.override { enableNixHacks = true; }) else bazel) ];
@@ -81,7 +88,10 @@ in stdenv.mkDerivation (fBuildAttrs // {
     cp -r $deps/* $bazelOut/external
     chmod -R +w $bazelOut
     find $bazelOut -type l | while read symlink; do
-      ln -sf $(readlink "$symlink" | sed "s,NIX_BUILD_TOP,$NIX_BUILD_TOP,") "$symlink"
+        if [[ $(readlink -f "$symlink") != /nix/store/* ]] ;
+        then
+          ln -sf $(readlink "$symlink" | sed "s,NIX_BUILD_TOP,$NIX_BUILD_TOP,") "$symlink"
+	      fi
     done
   '' + fBuildAttrs.preConfigure or "";
 

@@ -1,0 +1,13 @@
+diff --git a/WORKSPACE b/WORKSPACE
+index 6f28424..c596afe 100644
+--- a/WORKSPACE
++++ b/WORKSPACE
+@@ -30,7 +30,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_register_toolchains", "go_rules_depen
+ 
+ go_rules_dependencies()
+ 
+-go_register_toolchains()
++go_register_toolchains(go_version = "host")
+ 
+ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+ load("@bazel_gazelle//:def.bzl", "go_repository")
