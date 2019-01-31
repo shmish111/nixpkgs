@@ -82,9 +82,9 @@ in stdenv.mkDerivation (fBuildAttrs // {
     '';
 
     dontFixup = true;
-    outputHashMode = "recursive";
-    outputHashAlgo = "sha256";
-    outputHash = fetchAttrs.sha256;
+    # outputHashMode = "recursive";
+    # outputHashAlgo = "sha256";
+    # outputHash = fetchAttrs.sha256;
   });
 
   nativeBuildInputs = fBuildAttrs.nativeBuildInputs or [] ++ [ (if enableNixHacks then (bazel.override { enableNixHacks = true; }) else bazel) ];
