@@ -32,6 +32,7 @@ buildBazelPackage rec {
       # Remove all built in external workspaces, Bazel will recreate them when building
       rm -rf $bazelOut/external/{bazel_tools,\@bazel_tools.marker,local_*,\@local_*}
       '';
+    sha256 = "1nahz55r4f43qspq7r1nl2ip8vs4x2lq3p0qhwrnh0dm3118g0hw";
   };
 
   buildAttrs = {
