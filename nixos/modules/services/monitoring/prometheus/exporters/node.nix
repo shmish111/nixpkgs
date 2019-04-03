@@ -24,6 +24,14 @@ in
         Collectors to disable which are enabled by default.
       '';
     };
+    textfileDirectory = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      example = "/path/to/prom/files";
+      description = ''
+        The collector will parse all files in this directory matching the glob *.prom
+      '';
+    }
   };
   serviceOpts = {
     serviceConfig = {
@@ -32,6 +40,7 @@ in
         ${pkgs.prometheus-node-exporter}/bin/node_exporter \
           ${concatMapStringsSep " " (x: "--collector." + x) cfg.enabledCollectors} \
           ${concatMapStringsSep " " (x: "--no-collector." + x) cfg.disabledCollectors} \
+          ${optionalString (cfg.textfileDirectory != null) ("--collector.textfile.directory" + cfg.textfileDirectory)}
           --web.listen-address ${cfg.listenAddress}:${toString cfg.port} \
           ${concatStringsSep " \\\n  " cfg.extraFlags}
       '';
