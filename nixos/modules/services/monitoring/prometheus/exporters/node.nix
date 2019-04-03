@@ -31,7 +31,7 @@ in
       description = ''
         The collector will parse all files in this directory matching the glob *.prom
       '';
-    }
+    };
   };
   serviceOpts = {
     serviceConfig = {
