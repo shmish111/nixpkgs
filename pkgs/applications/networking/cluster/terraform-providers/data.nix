@@ -714,6 +714,13 @@
       version = "0.2.0";
       sha256  = "0ic5b9djhnb1bs2bz3zdprgy3r55dng09xgc4d9l9fyp85g2amaz";
     };
+  statevar =
+    {
+      owner   = "shmish111";
+      repo    = "terraform-provider-statevar";
+      version = "1.0.0";
+      sha256  = "0a07r5rryy2p8ycmj3hmfbgypl4phdm2y7c3a8vfj1dqchnz096x";
+    };
   ansible =
     {
       owner   = "nbering";
